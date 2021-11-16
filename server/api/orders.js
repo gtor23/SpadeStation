@@ -7,14 +7,14 @@ const {createOrder,
     getUsersOrders,
     getOrderById} = require('../db')
 
-    const{requireUser, requireAdmin} = require('./utils')
+const{requireUser, requireAdmin} = require('./utils')
 
 //-------------------Require Admin is used for these routes--------------//
 
 /* Get orders */
 
 ordersRouter.get('/', async(req, res, next) => {
-    // console.log(req.params)
+
     try{
 
         const orders = await getOrdersWithoutGames();
@@ -64,25 +64,16 @@ ordersRouter.patch('/:orderId', requireUser, requireAdmin, async(req, res, next)
     const {orderId} = req.params
     console.log('the order id:----',orderId)
 
-    // const {payment, shippingLoc, orderStatus} = req.body;
-
     console.log('the req.body------', req.body)
-
-    // res.send('hello')
 
     try{
         const {buyerId} = await getOrderById(orderId);
 
-        // console.log('yoooo----', buyerId)
-
         if (buyerId === id){
             
-        // const id = routineId;
-
         const updatedOrder = await updateOrder(orderId, req.body);
         console.log('the updated order ------', updateOrder)
 
-        // res.send('HEllo2')
         res.send(updatedOrder)
         }else{
             next({message: 'Invalid'})
